@@ -1,7 +1,8 @@
 import readline from 'readline'
 import { getConfigProperty } from './configHelper'
+import {MyBot} from "../types/autobuy";
 
-export function setupConsoleInterface(ws: WebSocket) {
+export function setupConsoleInterface(bot: MyBot, ws: WebSocket) {
     if (!getConfigProperty('ENABLE_CONSOLE_INPUT')) {
         return
     }
@@ -24,12 +25,13 @@ export function setupConsoleInterface(ws: WebSocket) {
                 })
             )
         } else {
-            ws.send(
+            bot.chat("test")
+
+           /* ws.send(
                 JSON.stringify({
                     type: 'chat',
                     data: `"${input}"`
-                })
-            )
+                }))*/
         }
     })
 }

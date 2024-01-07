@@ -1,6 +1,6 @@
 import { MyBot } from '../types/autobuy'
 import { log, printMcChatToConsole } from './logger'
-import { clickWindow, getWindowTitle } from './utils'
+import {clickWindow, getWindowTitle, sleep} from './utils'
 import { ChatMessage } from 'prismarine-chat'
 import { sendWebhookItemPurchased, sendWebhookItemSold } from './webhookHandler'
 
@@ -26,6 +26,11 @@ export function registerIngameMessageHandler(bot: MyBot, wss: WebSocket) {
 
                 sendWebhookItemPurchased(text.split(' purchased ')[1].split(' for ')[0], text.split(' for ')[1].split(' coins!')[0])
             }
+
+            if (text.includes('party') && text.includes('WetThighs')) {
+                fragbot(bot)
+            }
+
             if (text.startsWith('[Auction]') && text.includes('bought') && text.includes('for')) {
                 log('New item sold')
                 //claimSoldItem(bot)
@@ -180,3 +185,16 @@ export async function claimSoldItem(bot: MyBot) {
         }
     })
 }
+async function fragbot(bot: MyBot) {
+    bot.chat('/p accept WetThighs')
+    bot.on('message', async (message: ChatMessage, type) => {
+        let text = message.getText(null)
+        if (text.includes('entered')) {
+            await sleep(10*1000)
+            bot.chat('/p leave')
+            await sleep(3*1000)
+            bot.chat('/hub')
+        }
+    })
+}
+

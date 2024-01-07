@@ -32,9 +32,7 @@ export async function tryToTeleportToIsland(bot: MyBot, delayBeforeTeleport = 50
         return true
     }
 
-    if (
-        !bot.scoreboard.sidebar.items.map(item => item.displayName.getText(null).replace(item.name, '')).find(e => e.includes('Purse:') || e.includes('Piggy:'))
-    ) {
+    if (bot.scoreboard['1'] && !bot.scoreboard['1'].name.includes('SBScoreboard')) {
         await sleep(delayBeforeTeleport)
         log(`Bot seems to be in lobby (Sidebar title = ${bot.scoreboard.sidebar.title}). Sending "/play sb"`)
         printMcChatToConsole('§f[§4BAF§f]: §fYou seem to be in the lobby.')
@@ -49,9 +47,11 @@ export async function tryToTeleportToIsland(bot: MyBot, delayBeforeTeleport = 50
         log('Bot is not on island. Warping back')
         printMcChatToConsole('§f[§4BAF§f]: §fYou seem to not be on your island.')
         printMcChatToConsole('§f[§4BAF§f]: §fWarping back to island...')
+        printMcChatToConsole('§f[§4BAF§f]: §fWarping back to island...')
         bot.chat('/is')
         return true
     }
+
     return false
 }
 

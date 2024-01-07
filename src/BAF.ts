@@ -69,6 +69,7 @@ bot.once('spawn', async () => {
 function connectWebsocket() {
     wss = new WebSocket(`wss://sky.coflnet.com/modsocket?player=${ingameName}&version=${version}&SId=${getSessionId(ingameName)}`)
     wss.onopen = function () {
+        // @ts-ignore
         setupConsoleInterface(wss)
         sendWebhookInitialized()
     }
