@@ -28,7 +28,7 @@ export function registerIngameMessageHandler(bot: MyBot, wss: WebSocket) {
             }
             if (text.startsWith('[Auction]') && text.includes('bought') && text.includes('for')) {
                 log('New item sold')
-                claimSoldItem(bot)
+                //claimSoldItem(bot)
 
                 sendWebhookItemSold(
                     text.split(' bought ')[1].split(' for ')[0],

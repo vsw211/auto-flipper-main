@@ -191,6 +191,6 @@ async function onScoreboardChanged() {
 
         await sleep(20000)
         // trying to claim sold items if sold while user was offline
-        claimSoldItem(bot)
+        //claimSoldItem(bot)
     }
 }
