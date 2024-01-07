@@ -22,13 +22,13 @@ export function initAFKHandler(bot: MyBot) {
     }
 }
 
-export async function tryToTeleportToIsland(bot: MyBot, delayBeforeTeleport = 5000) {
+    export async function tryToTeleportToIsland(bot: MyBot, delayBeforeTeleport = 10*1000) {
     if (isLimbo(bot.scoreboard.sidebar)) {
         await sleep(delayBeforeTeleport)
         log('Bot seems to be in limbo. Sending "/lobby"')
         printMcChatToConsole('§f[§4BAF§f]: §fYou seem to be in limbo.')
         printMcChatToConsole('§f[§4BAF§f]: §fWarping back to lobby...')
-        bot.chat('/lobby')
+        bot.customChat('/lobby')
         return true
     }
 
@@ -37,7 +37,7 @@ export async function tryToTeleportToIsland(bot: MyBot, delayBeforeTeleport = 50
         log(`Bot seems to be in lobby (Sidebar title = ${bot.scoreboard.sidebar.title}). Sending "/play sb"`)
         printMcChatToConsole('§f[§4BAF§f]: §fYou seem to be in the lobby.')
         printMcChatToConsole('§f[§4BAF§f]: §fWarping back into skyblock...')
-        bot.chat('/play sb')
+        bot.customChat('/play sb')
         return true
     }
 
@@ -48,7 +48,7 @@ export async function tryToTeleportToIsland(bot: MyBot, delayBeforeTeleport = 50
         printMcChatToConsole('§f[§4BAF§f]: §fYou seem to not be on your island.')
         printMcChatToConsole('§f[§4BAF§f]: §fWarping back to island...')
         printMcChatToConsole('§f[§4BAF§f]: §fWarping back to island...')
-        bot.chat('/is')
+        bot.customChat('/is')
         return true
     }
 

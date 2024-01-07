@@ -27,8 +27,8 @@ export function registerIngameMessageHandler(bot: MyBot, wss: WebSocket) {
                 sendWebhookItemPurchased(text.split(' purchased ')[1].split(' for ')[0], text.split(' for ')[1].split(' coins!')[0])
             }
 
-            if (text.includes('party') && text.includes('WetThighs')) {
-                fragbot(bot)
+            if (text.includes('invited you to join their party')) {
+                fragbot(bot, text)
             }
 
             if (text.startsWith('[Auction]') && text.includes('bought') && text.includes('for')) {
@@ -62,7 +62,7 @@ function claimPurchased(bot: MyBot) {
         return
     }
     bot.state = 'claiming'
-    bot.chat('/ah')
+    bot.customChat('/ah')
 
     setTimeout(() => {
         log('Claiming of purchased auction failed. Removing lock')
@@ -134,7 +134,7 @@ export async function claimSoldItem(bot: MyBot) {
     }, 10000)
 
     bot.state = 'claiming'
-    bot.chat('/ah')
+    bot.customChat('/ah')
 
     bot.on('windowOpen', window => {
         let title = getWindowTitle(window)
@@ -185,16 +185,18 @@ export async function claimSoldItem(bot: MyBot) {
         }
     })
 }
-async function fragbot(bot: MyBot) {
-    bot.chat('/p accept WetThighs')
-    bot.on('message', async (message: ChatMessage, type) => {
-        let text = message.getText(null)
-        if (text.includes('entered')) {
-            await sleep(10*1000)
-            bot.chat('/p leave')
-            await sleep(3*1000)
-            bot.chat('/hub')
-        }
-    })
+async function fragbot(bot: MyBot, invite: string) {
+    const regex = /\[[^\]]+\]\s+([^\s]+)\s+has/;
+    const match = invite.match(regex);
+    if (match && match[1]) {
+        const ign = match[1];
+        await sleep(1000)
+        bot.customChat(`/p accept ${ign}`);
+        await sleep(3*1000)
+        bot.customChat('/p leave')
+
+    }
+
+
 }
 

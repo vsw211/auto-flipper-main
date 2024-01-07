@@ -33,7 +33,13 @@ const bot: MyBot = createBot({
     logErrors: true,
     version: '1.17',
     host: 'mc.hypixel.net'
-})
+})  as MyBot
+// Extend bot.customChat with the customChat functionality
+bot.customChat = function (message: string) {
+    this.chat(message);
+    printMcChatToConsole(`sent message ${message} to chat`)
+}
+
 bot.setMaxListeners(0)
 
 bot.state = 'gracePeriod'
@@ -61,7 +67,7 @@ bot.once('login', () => {
 bot.once('spawn', async () => {
     await bot.waitForChunksToLoad()
     await sleep(2000)
-    bot.chat('/play sb')
+    bot.customChat('/play sb')
     bot.on('scoreboardTitleChanged', onScoreboardChanged)
     registerIngameMessageHandler(bot, wss)
 })
@@ -69,8 +75,7 @@ bot.once('spawn', async () => {
 function connectWebsocket() {
     wss = new WebSocket(`wss://sky.coflnet.com/modsocket?player=${ingameName}&version=${version}&SId=${getSessionId(ingameName)}`)
     wss.onopen = function () {
-        // @ts-ignore
-        setupConsoleInterface(wss)
+        setupConsoleInterface(bot, wss)
         sendWebhookInitialized()
     }
     wss.onmessage = onWebsocketMessage
@@ -157,7 +162,7 @@ async function onWebsocketMessage(msg) {
                     })
                 )
             } else {
-                bot.chat(data)
+                bot.customChat(data)
             }
             break
         case 'privacySettings':
@@ -169,9 +174,7 @@ async function onWebsocketMessage(msg) {
 }
 
 async function onScoreboardChanged() {
-    if (
-        bot.scoreboard.sidebar.items.map(item => item.displayName.getText(null).replace(item.name, '')).find(e => e.includes('Purse:') || e.includes('Piggy:'))
-    ) {
+    if (bot.scoreboard['1'] && bot.scoreboard['1'].name.includes('SBScoreboard')) {
         bot.removeListener('scoreboardTitleChanged', onScoreboardChanged)
         log('Joined SkyBlock')
         initAFKHandler(bot)
@@ -190,8 +193,9 @@ async function onScoreboardChanged() {
         await sleep(2500)
         tryToTeleportToIsland(bot, 0)
 
-        await sleep(20000)
+        await sleep(20* 1000)
         // trying to claim sold items if sold while user was offline
         //claimSoldItem(bot)
     }
+
 }

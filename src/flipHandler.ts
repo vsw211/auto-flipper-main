@@ -26,7 +26,7 @@ export async function flipHandler(bot: MyBot, flip: Flip) {
 
     bot.lastViewAuctionCommandForPurchase = `/viewauction ${flip.id}`
     await sleep(delayUntilBuyStart)
-    bot.chat(bot.lastViewAuctionCommandForPurchase)
+    bot.customChat(bot.lastViewAuctionCommandForPurchase)
 
     printMcChatToConsole(
         `§f[§4BAF§f]: §fTrying to purchase flip${isBed ? ' (Bed)' : ''}: ${flip.itemName} §for ${numberWithThousandsSeparators(

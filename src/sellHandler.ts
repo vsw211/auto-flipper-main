@@ -40,7 +40,7 @@ async function sellItem(data: SellData, bot: MyBot) {
         })
     }
     bot.on('windowOpen', handler)
-    bot.chat('/ah')
+    bot.customChat('/ah')
 }
 
 async function sellHandler(data: SellData, bot: MyBot, sellWindow, removeEventListenerCallback: Function) {
